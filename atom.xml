@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yedongze.com</id>
     <title>喔喔</title>
-    <updated>2019-09-25T14:52:12.915Z</updated>
+    <updated>2019-09-25T15:05:01.029Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yedongze.com"/>
     <link rel="self" href="https://yedongze.com/atom.xml"/>
@@ -11,35 +11,102 @@
     <icon>https://yedongze.com/favicon.ico</icon>
     <rights>All rights reserved 2019, 喔喔</rights>
     <entry>
-        <title type="html"><![CDATA[Hello Gridea]]></title>
-        <id>https://yedongze.com/post/hello-gridea</id>
-        <link href="https://yedongze.com/post/hello-gridea">
+        <title type="html"><![CDATA[Nginx + GeoIP 区分用户 IP 归属国]]></title>
+        <id>https://yedongze.com/post/blocking-country-and-continent-with-nginx-geoip</id>
+        <link href="https://yedongze.com/post/blocking-country-and-continent-with-nginx-geoip">
         </link>
         <updated>2018-12-11T16:00:00.000Z</updated>
-        <summary type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>👏  欢迎使用 <strong>Gridea</strong> ！<br>
-✍️  <strong>Gridea</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<!-- more -->
-<p><a href="https://github.com/getgridea/gridea">Github</a><br>
-<a href="https://gridea.dev/">Gridea 主页</a><br>
-<a href="http://fehey.com/">示例网站</a></p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>Windows</strong>，<strong>MacOS</strong> 或 <strong>Linux</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题，强大的主题自定义能力</p>
-<p>🖥  你可以自定义源文件夹，利用 OneDrive、百度网盘、iCloud、Dropbox 等进行多设备同步</p>
-<p>🌱 当然 <strong>Gridea</strong> 还很年轻，有很多不足，但请相信，它会不停向前 🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+        <content type="html"><![CDATA[<p>事情的背景是之前为了方便在公用电脑上阅读，在私人网盘上存了几本 O'Reilly 动物书的 PDF 文件，但是没想到被搜索引擎收录，于是最近收到了 O'Reilly 的 DMCA 邮件（估计邮箱是从域名注册商拿到的），因此为了在不妨碍自己使用资源的前提下规避问题，选择阻止中国以外 IP 访问该目录下的资源。</p>
+<p>这里使用了 Nginx 的 GeoIP 拓展（ngx_http_geoip_module），在标准版的 Nginx 中我们需要重新把拓展编译进去，但是我使用的 Tengine 可以直接加载动态模块（原版也能直接动态加载模块了）。</p>
+<p>首先安装 nginx-module-geoip：</p>
+<pre><code>sudo apt-get install nginx-module-geoip
+</code></pre>
+<p>然后下载 IP 数据库并解压，可将解压出来的 GeoIPv6.dat 文件放到你喜欢的任何地方：</p>
+<pre><code># DAT 版数据库官方已不再提供下载，下面的链接是祖传备份
+# 详见：https://dev.maxmind.com/geoip/legacy/downloadable/
+wget https://cloud.moezx.cc/mirrors/geoip/database/GeoIPv6.dat.gz
+gzip -d -k GeoIPv6.dat.gz
+ 
+# GeoIPv6.dat 覆盖了 IPv4 和 IPv6 的数据，如果仅需 IPv4，使用下面这个文件
+wget https://cloud.moezx.cc/mirrors/geoip/database/GeoIP.dat.gz
+</code></pre>
+<p>然后需要下载并编译 ngx_http_geoip_module 模块，编译完成后nginx.conf 中加入如下部分：</p>
+<pre><code># 引入二进制库（仅适用于 Tengine 2.3.0 之前版本，之后版本已移除 dso 指令）
+dso {
+    load ngx_http_geoip_module.so;
+}
+ 
+# 引入二进制库（适用于原版 Nginx 以及 Tengine 2.3.0 之后版本）
+load_module ngx_http_geoip_module.so;
+ 
+# http 块下添加如下初始化代码
+http {
+    ···
+    geoip_country /path/to/GeoIPv6.dat;
+    # 排除对 CDN 等代理服务器的过滤（下面都是 Cloudflare 的服务器 IP）
+    geoip_proxy    103.21.244.0/22;
+    geoip_proxy    103.22.200.0/22;
+    geoip_proxy    103.31.4.0/22;
+    geoip_proxy    104.16.0.0/12;
+    geoip_proxy    108.162.192.0/18;
+    geoip_proxy    131.0.72.0/22;
+    geoip_proxy    141.101.64.0/18;
+    geoip_proxy    162.158.0.0/15;
+    geoip_proxy    172.64.0.0/13;
+    geoip_proxy    173.245.48.0/20;
+    geoip_proxy    188.114.96.0/20;
+    geoip_proxy    190.93.240.0/20;
+    geoip_proxy    197.234.240.0/22;
+    geoip_proxy    198.41.128.0/17;  
+    geoip_proxy    2400:cb00::/32;
+    geoip_proxy    2405:8100::/32;
+    geoip_proxy    2405:b500::/32;
+    geoip_proxy    2606:4700::/32;
+    geoip_proxy    2803:f800::/32;
+    geoip_proxy    2c0f:f248::/32;
+    geoip_proxy    2a06:98c0::/29;
+    geoip_proxy_recursive on;
+    ···
+}
+</code></pre>
+<p>之后就可以在 Server 块中控制访问权限了：</p>
+<pre><code># 写法一：允许部分地区访问
+server {
+    ···
+    set $where_are_you_from 0;
+    if ($geoip_country_code = CN) {
+        set $where_are_you_from 1;
+    }
+    location /Document/ {
+        default_type text/html;
+        charset utf-8;
+        if ($where_are_you_from = 0) {
+            return 200 'This resource is not available in your country!';
+        }
+    }
+    ···
+}
+ 
+# 写法二：禁止部分地区访问
+# 设置变量 $disallowed_country
+map $geoip_country_code $disallowed_country {
+    default no;
+    US yes;
+    CN no;
+} 
+server {
+    ···
+    location /Document/ {
+        default_type text/html;
+        charset utf-8;
+        if ($disallowed_country) {
+            return 200 'This resource is not available in your country!';
+        }
+    }
+    ···
+}
+</code></pre>
+<p>学会了吗？<img src="https://yedongze.com/post-images/1569423881338.png" alt=""></p>
 ]]></content>
     </entry>
 </feed>

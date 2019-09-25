@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>http://yedongze.coding.me</id>
     <title>喔喔</title>
-    <updated>2019-09-25T16:37:02.340Z</updated>
+    <updated>2019-09-25T16:41:34.176Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="http://yedongze.coding.me"/>
     <link rel="self" href="http://yedongze.coding.me/atom.xml"/>
@@ -10,6 +10,15 @@
     <logo>http://yedongze.coding.me/images/avatar.png</logo>
     <icon>http://yedongze.coding.me/favicon.ico</icon>
     <rights>All rights reserved 2019, 喔喔</rights>
+    <entry>
+        <title type="html"><![CDATA[测试]]></title>
+        <id>http://yedongze.coding.me/post/ce-shi</id>
+        <link href="http://yedongze.coding.me/post/ce-shi">
+        </link>
+        <updated>2019-09-25T16:41:25.000Z</updated>
+        <content type="html"><![CDATA[<p>123</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Nginx + GeoIP 区分用户 IP 归属国2]]></title>
         <id>http://yedongze.coding.me/post/blocking-country-and-continent-with-nginx-geoip</id>

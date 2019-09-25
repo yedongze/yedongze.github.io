@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://yedongze.com</id>
     <title>喔喔</title>
-    <updated>2019-09-25T15:16:00.965Z</updated>
+    <updated>2019-09-25T15:17:12.039Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://yedongze.com"/>
     <link rel="self" href="https://yedongze.com/atom.xml"/>
@@ -17,11 +17,10 @@
         </link>
         <updated>2019-09-25T15:07:15.000Z</updated>
         <summary type="html"><![CDATA[<p>事情的背景是之前为了方便在公用电脑上阅读，在私人网盘上存了几本 O'Reilly 动物书的 PDF 文件，但是没想到被搜索引擎收录，于是最近收到了 O'Reilly 的 DMCA 邮件（估计邮箱是从域名注册商拿到的），因此为了在不妨碍自己使用资源的前提下规避问题，选择阻止中国以外 IP 访问该目录下的资源。</p>
-<p>这里使用了 Nginx 的 GeoIP 拓展（ngx_http_geoip_module），在标准版的 Nginx 中我们需要重新把拓展编译进去，但是我使用的 Tengine 可以直接加载动态模块（原版也能直接动态加载模块了）。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>事情的背景是之前为了方便在公用电脑上阅读，在私人网盘上存了几本 O'Reilly 动物书的 PDF 文件，但是没想到被搜索引擎收录，于是最近收到了 O'Reilly 的 DMCA 邮件（估计邮箱是从域名注册商拿到的），因此为了在不妨碍自己使用资源的前提下规避问题，选择阻止中国以外 IP 访问该目录下的资源。</p>
-<p>这里使用了 Nginx 的 GeoIP 拓展（ngx_http_geoip_module），在标准版的 Nginx 中我们需要重新把拓展编译进去，但是我使用的 Tengine 可以直接加载动态模块（原版也能直接动态加载模块了）。</p>
 <!-- more -->
+<p>这里使用了 Nginx 的 GeoIP 拓展（ngx_http_geoip_module），在标准版的 Nginx 中我们需要重新把拓展编译进去，但是我使用的 Tengine 可以直接加载动态模块（原版也能直接动态加载模块了）。</p>
 <p>首先安装 nginx-module-geoip：</p>
 <pre><code>sudo apt-get install nginx-module-geoip
 </code></pre>

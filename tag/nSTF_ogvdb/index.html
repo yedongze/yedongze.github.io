@@ -31,9 +31,29 @@
       
         <div class="animated fadeInLeft" style="animation-delay: 0.4s">
           <p class="my-4 text-gray-600 font-light hidden lg:block">
-            文章目录
+            温故而知新
           </p>
-          <div class="toc-container hidden lg:block">
+          <div class="animated fadeInLeft social-container hidden lg:block" style="animation-delay: 0.6s">
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
             
           </div>
         </div>
@@ -78,129 +98,33 @@
 </div>
 <div class="mask" onclick="closeMenu()">
 </div>
-      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4 post-detail animated fadeIn">
-        <h1 class="text-3xl font-bold lg:mt-16">Nginx + GeoIP 区分用户 IP 归属国</h1>
-        <div class="text-sm text-gray-700 lg:my-8">
-          2019-09-25 / 3 min read
+      <div class="content-wrapper py-32 lg:p-8 lg:w-3/4">
+        <h2 class="text-lg text-gray-700 mb-8">
+          <i class="remixicon-bookmark-line"></i> GeoIP
+        </h2>
+        
+  <section class="post-item md:flex pb-12 animated fadeIn" :style="{ 'animation-delay': `${0 * 0.2}s` }">
+    
+      <a href="https://yedongze.com/post/blocking-country-and-continent-with-nginx-geoip" class="feature-image-wrapper bg-gray-100 rounded-lg flex-shrink-0 mr-8 w-full h-56 h-32 md:w-56 md:h-40">
+        <div class="post-feature-image lazy w-full h-56 h-32 md:w-56 md:h-40" data-bg="'https://yedongze.com/post-images/blocking-country-and-continent-with-nginx-geoip.png'">
         </div>
+      </a>
+    
+    <div class="content">
+      <a href="https://yedongze.com/post/blocking-country-and-continent-with-nginx-geoip">
+        <h2 class="post-title text-xl font-extrabold mt-5 md:mt-0">Nginx + GeoIP 区分用户 IP 归属国</h2>
+      </a>
+      <div class="post-abstract text-gray-700 font-light my-4">
         
-          <img class="post-feature-image rounded-lg mx-auto my-4" src="https://yedongze.com/post-images/blocking-country-and-continent-with-nginx-geoip.png" alt="">
-        
-        <div class="post-content yue">
-          <!-- more -->
-<p>事情的背景是之前为了方便在公用电脑上阅读，在私人网盘上存了几本 O'Reilly 动物书的 PDF 文件，但是没想到被搜索引擎收录，于是最近收到了 O'Reilly 的 DMCA 邮件（估计邮箱是从域名注册商拿到的），因此为了在不妨碍自己使用资源的前提下规避问题，选择阻止中国以外 IP 访问该目录下的资源。</p>
-<p>这里使用了 Nginx 的 GeoIP 拓展（ngx_http_geoip_module），在标准版的 Nginx 中我们需要重新把拓展编译进去，但是我使用的 Tengine 可以直接加载动态模块（原版也能直接动态加载模块了）。</p>
-<!-- more -->
-<p>首先安装 nginx-module-geoip：</p>
-<pre><code>sudo apt-get install nginx-module-geoip
-</code></pre>
-<p>然后下载 IP 数据库并解压，可将解压出来的 GeoIPv6.dat 文件放到你喜欢的任何地方：</p>
-<pre><code># DAT 版数据库官方已不再提供下载，下面的链接是祖传备份
-# 详见：https://dev.maxmind.com/geoip/legacy/downloadable/
-wget https://cloud.moezx.cc/mirrors/geoip/database/GeoIPv6.dat.gz
-gzip -d -k GeoIPv6.dat.gz
- 
-# GeoIPv6.dat 覆盖了 IPv4 和 IPv6 的数据，如果仅需 IPv4，使用下面这个文件
-wget https://cloud.moezx.cc/mirrors/geoip/database/GeoIP.dat.gz
-</code></pre>
-<p>然后需要下载并编译 ngx_http_geoip_module 模块，编译完成后nginx.conf 中加入如下部分：</p>
-<pre><code># 引入二进制库（仅适用于 Tengine 2.3.0 之前版本，之后版本已移除 dso 指令）
-dso {
-    load ngx_http_geoip_module.so;
-}
- 
-# 引入二进制库（适用于原版 Nginx 以及 Tengine 2.3.0 之后版本）
-load_module ngx_http_geoip_module.so;
- 
-# http 块下添加如下初始化代码
-http {
-    ···
-    geoip_country /path/to/GeoIPv6.dat;
-    # 排除对 CDN 等代理服务器的过滤（下面都是 Cloudflare 的服务器 IP）
-    geoip_proxy    103.21.244.0/22;
-    geoip_proxy    103.22.200.0/22;
-    geoip_proxy    103.31.4.0/22;
-    geoip_proxy    104.16.0.0/12;
-    geoip_proxy    108.162.192.0/18;
-    geoip_proxy    131.0.72.0/22;
-    geoip_proxy    141.101.64.0/18;
-    geoip_proxy    162.158.0.0/15;
-    geoip_proxy    172.64.0.0/13;
-    geoip_proxy    173.245.48.0/20;
-    geoip_proxy    188.114.96.0/20;
-    geoip_proxy    190.93.240.0/20;
-    geoip_proxy    197.234.240.0/22;
-    geoip_proxy    198.41.128.0/17;  
-    geoip_proxy    2400:cb00::/32;
-    geoip_proxy    2405:8100::/32;
-    geoip_proxy    2405:b500::/32;
-    geoip_proxy    2606:4700::/32;
-    geoip_proxy    2803:f800::/32;
-    geoip_proxy    2c0f:f248::/32;
-    geoip_proxy    2a06:98c0::/29;
-    geoip_proxy_recursive on;
-    ···
-}
-</code></pre>
-<p>之后就可以在 Server 块中控制访问权限了：</p>
-<pre><code># 写法一：允许部分地区访问
-server {
-    ···
-    set $where_are_you_from 0;
-    if ($geoip_country_code = CN) {
-        set $where_are_you_from 1;
-    }
-    location /Document/ {
-        default_type text/html;
-        charset utf-8;
-        if ($where_are_you_from = 0) {
-            return 200 'This resource is not available in your country!';
-        }
-    }
-    ···
-}
- 
-# 写法二：禁止部分地区访问
-# 设置变量 $disallowed_country
-map $geoip_country_code $disallowed_country {
-    default no;
-    US yes;
-    CN no;
-} 
-server {
-    ···
-    location /Document/ {
-        default_type text/html;
-        charset utf-8;
-        if ($disallowed_country) {
-            return 200 'This resource is not available in your country!';
-        }
-    }
-    ···
-}
-</code></pre>
-<p>学会了吗？<img src="https://yedongze.com/post-images/1569423881338.png" alt=""></p>
+      </div>
+      <div class="text-gray-400 text-sm font-light">2019-09-25 / 3 min read</div>
+    </div>
+  </section>
 
-        </div>
-
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://yedongze.com/tag/a09a3e29u">
-            <span class="flex-auto">Nginx</span>
-          </a>
-        
-          <a class="animated fadeInUp p-2 items-center text-sm text-gray-700 border hover:bg-gray-300 leading-none rounded-full flex lg:inline-flex m-4 " href="https://yedongze.com/tag/nSTF_ogvdb">
-            <span class="flex-auto">GeoIP</span>
-          </a>
-        
-
-
-        <div class="flex justify-between py-8">
-          
-
-          
-        </div>
-
-        
+        <div class="pagination-container animated fadeIn">
+  
+  
+</div>
 
       </div>
     </div>

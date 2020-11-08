@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-    <id>https://yedongze.com</id>
+    <id>http://yedongze.com</id>
     <title>喔喔</title>
-    <updated>2020-11-08T09:35:50.162Z</updated>
+    <updated>2020-11-08T09:39:26.904Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
-    <link rel="alternate" href="https://yedongze.com"/>
-    <link rel="self" href="https://yedongze.com/atom.xml"/>
+    <link rel="alternate" href="http://yedongze.com"/>
+    <link rel="self" href="http://yedongze.com/atom.xml"/>
     <subtitle>温故而知新</subtitle>
-    <logo>https://yedongze.com/images/avatar.png</logo>
-    <icon>https://yedongze.com/favicon.ico</icon>
+    <logo>http://yedongze.com/images/avatar.png</logo>
+    <icon>http://yedongze.com/favicon.ico</icon>
     <rights>All rights reserved 2020, 喔喔</rights>
     <entry>
         <title type="html"><![CDATA[今天想滑雪]]></title>
-        <id>https://yedongze.com/post/jin-tian-xiang-hua-xue/</id>
-        <link href="https://yedongze.com/post/jin-tian-xiang-hua-xue/">
+        <id>http://yedongze.com/post/jin-tian-xiang-hua-xue/</id>
+        <link href="http://yedongze.com/post/jin-tian-xiang-hua-xue/">
         </link>
         <updated>2019-12-26T03:20:26.000Z</updated>
         <content type="html"><![CDATA[<p>然后就看到了藏王温泉滑雪场。</p>
 <p>也不知道什么时候会去..</p>
-<figure data-type="image" tabindex="1"><img src="https://yedongze.com/post-images/1577330512419.jpeg" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="http://yedongze.com/post-images/1577330512419.jpeg" alt="" loading="lazy"></figure>
 ]]></content>
     </entry>
 </feed>
